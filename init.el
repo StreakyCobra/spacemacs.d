@@ -39,21 +39,43 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
      auto-completion
      better-defaults
+     c-c++
+     colors
+     docker
      emacs-lisp
+     emoji
+     ess
      git
+     github
+     haskell
+     helm
+     html
+     javascript
+     latex
      markdown
+     nginx
      multiple-cursors
-     treemacs
      org
+     python
+     ranger
+     rebox
+     restclient
+     rust
+     semantic
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
+     shell-scripts
      spell-checking
+     sql
      syntax-checking
+     systemd
+     themes-megapack
+     treemacs
      version-control
+     yaml
      )
 
    ;; List of additional packages that will be installed without being
@@ -63,7 +85,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(mode-icons pkgbuild-mode)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -440,6 +462,9 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (setq-default
+   ;; abbrev
+   save-abbrevs 'silent)
   )
 
 (defun dotspacemacs/user-load ()
