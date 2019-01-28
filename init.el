@@ -515,6 +515,8 @@ before packages are loaded."
   (read-abbrev-file)
   ;; pkgbuild
   (add-to-list 'auto-mode-alist '("/PKGBUILD$" . pkgbuild-mode))
+  ;; vue.js
+  (add-to-list 'auto-mode-alist '("\\.vue$" . web-mode))
   ;; Persistent undo
   (setq undo-tree-auto-save-history t
         undo-tree-history-directory-alist
