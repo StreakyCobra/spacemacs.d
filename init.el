@@ -513,6 +513,9 @@ before packages are loaded."
   (add-hook 'text-mode-hook 'turn-on-fci-mode)
   ;; Load Abbreviations
   (read-abbrev-file)
+  ;; Fix Spaceline symbols in emacsclient mode
+  (spacemacs|do-after-display-system-init
+    (spacemacs-modeline/init-spaceline))
   ;; pkgbuild
   (add-to-list 'auto-mode-alist '("/PKGBUILD$" . pkgbuild-mode))
   ;; vue.js
