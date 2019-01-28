@@ -521,6 +521,11 @@ before packages are loaded."
         `(("." . ,(concat spacemacs-cache-directory "undo"))))
   (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
     (make-directory (concat spacemacs-cache-directory "undo")))
+
+  (defun insert-datetime-stamp ()
+    "Insert string of the current datetime stamp."
+    (interactive)
+    (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
