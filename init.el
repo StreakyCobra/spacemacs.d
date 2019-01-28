@@ -464,6 +464,7 @@ It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq-default
    ;; abbrev
+   abbrev-mode t
    save-abbrevs 'silent
    ;; ranger
    ranger-override-dired t
@@ -482,7 +483,46 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (setq
+   ;; abbrev
+   abbrev-file-name (concat user-home-directory ".abbrev_defs")
+   ;; lockfiles
+   create-lockfiles nil
+   ;; powerline
+   powerline-default-separator 'wave
+   ;; ranger
+   ranger-cleanup-on-disable t
+   ranger-dont-show-binary t
+   ranger-show-dotfiles nil
+   ranger-show-preview t
+   ;; rebox
+   rebox-min-fill-column 79
+   rebox-style-loop '(11 13 15 17 21 23 25 27)
+   )
   (global-git-commit-mode t)
+  ;; mode-icons
+  (spacemacs|do-after-display-system-init
+   (mode-icons-mode))
+  ;; Limit python to 79 characters
+  (add-hook 'python-mode-hook (lambda () (set-fill-column 79)))
+  ;; Activate column indicator in prog-mode and text-mode, except for org-mode
+  (add-hook 'prog-mode-hook 'turn-on-fci-mode)
+  (add-hook 'text-mode-hook 'turn-on-fci-mode)
+  (dolist (hook '(org-mode-hook
+                  rust-mode-hook
+                  web-mode-hook
+                  imenu-list-major-mode-hook))
+    (add-hook hook 'turn-off-fci-mode 'append))
+  ;; Load Abbreviations
+  (read-abbrev-file)
+  ;; pkgbuild
+  (add-to-list 'auto-mode-alist '("/PKGBUILD$" . pkgbuild-mode))
+  ;; Persistent undo
+  (setq undo-tree-auto-save-history t
+        undo-tree-history-directory-alist
+        `(("." . ,(concat spacemacs-cache-directory "undo"))))
+  (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
+    (make-directory (concat spacemacs-cache-directory "undo")))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
