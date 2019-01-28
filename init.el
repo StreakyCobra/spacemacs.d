@@ -464,8 +464,10 @@ It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq-default
    ;; abbrev
-   save-abbrevs 'silent)
-  )
+   save-abbrevs 'silent
+   ;; ranger
+   ranger-override-dired t
+   ))
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
