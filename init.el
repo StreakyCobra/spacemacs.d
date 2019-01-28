@@ -53,6 +53,7 @@ This function should only modify configuration layer settings."
      helm
      html
      javascript
+     imenu-list
      latex
      markdown
      nginx
