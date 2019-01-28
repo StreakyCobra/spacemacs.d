@@ -506,14 +506,9 @@ before packages are loaded."
    (mode-icons-mode))
   ;; Limit python to 79 characters
   (add-hook 'python-mode-hook (lambda () (set-fill-column 79)))
-  ;; Activate column indicator in prog-mode and text-mode, except for org-mode
+  ;; Activate column indicator in prog-mode and text-mode
   (add-hook 'prog-mode-hook 'turn-on-fci-mode)
   (add-hook 'text-mode-hook 'turn-on-fci-mode)
-  (dolist (hook '(org-mode-hook
-                  rust-mode-hook
-                  web-mode-hook
-                  imenu-list-major-mode-hook))
-    (add-hook hook 'turn-off-fci-mode 'append))
   ;; Load Abbreviations
   (read-abbrev-file)
   ;; pkgbuild
