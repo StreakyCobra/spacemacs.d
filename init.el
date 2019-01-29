@@ -2,6 +2,8 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+(load-file "~/.spacemacs.d/font.el")
+
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
@@ -110,8 +112,6 @@ This function should only modify configuration layer settings."
 This function is called at the very beginning of Spacemacs startup,
 before layer configuration.
 It should only modify the values of Spacemacs settings."
-  (load-file "~/.spacemacs.d/fontsize.el")
-
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -231,10 +231,11 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font `("Source Code Pro"
-                               :size ,(scale-font-size 14)
-                               :weight normal
-                               :width normal)
+   my-default-font '("Source Code Pro"
+                     :size 14
+                     :weight normal
+                     :width normal)
+   dotspacemacs-default-font (fix-font-scale my-default-font)
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -467,6 +468,9 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  ;; https://github.com/syl20bnr/spacemacs/issues/6197#issuecomment-224248780
+  (add-hook 'focus-in-hook #'reset-default-font)
+
   (setq-default
    ;; abbrev
    abbrev-mode t
