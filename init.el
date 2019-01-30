@@ -474,7 +474,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq-default
    ;; abbrev
    abbrev-mode t
-   save-abbrevs 'silent
    ;; ranger
    ranger-override-dired t
    ))
