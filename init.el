@@ -509,6 +509,7 @@ before packages are loaded."
    rebox-style-loop '(11 13 15 17 21 23 25 27)
    )
   (global-git-commit-mode t)
+  (global-emojify-mode t)
   ;; mode-icons
   (spacemacs|do-after-display-system-init
    (mode-icons-mode))
