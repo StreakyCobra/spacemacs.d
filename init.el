@@ -3,6 +3,7 @@
 ;; It must be stored in your home directory.
 
 (load-file "~/.spacemacs.d/font.el")
+(load-file "~/.spacemacs.d/funcs.el")
 
 (defun dotspacemacs/layers ()
   "Layer configuration:
@@ -469,15 +470,18 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (setq-default
+   ;; Enable abbrev mode
+   abbrev-mode t
+   ;; Use ranger instead of dired
+   ranger-override-dired t
+   )
+
+  ;; Reset font the first time a frame is open
+  ;; Allow to fix the font in daemon mode
   ;; https://github.com/syl20bnr/spacemacs/issues/6197#issuecomment-224248780
   (add-hook 'focus-in-hook #'reset-default-font)
-
-  (setq-default
-   ;; abbrev
-   abbrev-mode t
-   ;; ranger
-   ranger-override-dired t
-   ))
+  )
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
@@ -492,13 +496,16 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  ;; ----------------------------------------------------------------------- ;;
+  ;; Configuration variables                                                 ;;
+  ;; ----------------------------------------------------------------------- ;;
+
   (setq
    ;; abbrev
    abbrev-file-name (concat user-home-directory ".abbrev_defs")
    ;; lockfiles
    create-lockfiles nil
-   ;; powerline
-   powerline-default-separator 'wave
    ;; ranger
    ranger-cleanup-on-disable t
    ranger-dont-show-binary t
@@ -508,36 +515,46 @@ before packages are loaded."
    rebox-min-fill-column 79
    rebox-style-loop '(11 13 15 17 21 23 25 27)
    )
+
+  ;; ----------------------------------------------------------------------- ;;
+  ;; Global modes                                                            ;;
+  ;; ----------------------------------------------------------------------- ;;
+
   (global-git-commit-mode t)
   (global-emojify-mode t)
-  ;; mode-icons
   (spacemacs|do-after-display-system-init
    (mode-icons-mode))
-  ;; Limit python to 79 characters
+
+  ;; ----------------------------------------------------------------------- ;;
+  ;; Hooks                                                                   ;;
+  ;; ----------------------------------------------------------------------- ;;
+
   (add-hook 'python-mode-hook (lambda () (set-fill-column 79)))
-  ;; Activate column indicator in prog-mode and text-mode
   (add-hook 'prog-mode-hook 'turn-on-fci-mode)
   (add-hook 'text-mode-hook 'turn-on-fci-mode)
-  ;; Load Abbreviations
+
+  ;; ----------------------------------------------------------------------- ;;
+  ;; File type                                                               ;;
+  ;; ----------------------------------------------------------------------- ;;
+
+  (add-to-list 'auto-mode-alist '("/PKGBUILD$" . pkgbuild-mode))
+  (add-to-list 'auto-mode-alist '("\\.vue$" . web-mode))
+
+  ;; ----------------------------------------------------------------------- ;;
+  ;; Packages configuration                                                  ;;
+  ;; ----------------------------------------------------------------------- ;;
+
   (read-abbrev-file)
-  ;; Fix Spaceline symbols in emacsclient mode
+
   (spacemacs|do-after-display-system-init
     (spacemacs-modeline/init-spaceline))
-  ;; pkgbuild
-  (add-to-list 'auto-mode-alist '("/PKGBUILD$" . pkgbuild-mode))
-  ;; vue.js
-  (add-to-list 'auto-mode-alist '("\\.vue$" . web-mode))
+
   ;; Persistent undo
   (setq undo-tree-auto-save-history t
         undo-tree-history-directory-alist
         `(("." . ,(concat spacemacs-cache-directory "undo"))))
   (unless (file-exists-p (concat spacemacs-cache-directory "undo"))
     (make-directory (concat spacemacs-cache-directory "undo")))
-
-  (defun insert-datetime-stamp ()
-    "Insert string of the current datetime stamp."
-    (interactive)
-    (insert (format-time-string "%Y-%m-%d %H:%M:%S")))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
