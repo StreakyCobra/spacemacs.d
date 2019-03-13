@@ -550,7 +550,9 @@ before packages are loaded."
   ;; ----------------------------------------------------------------------- ;;
 
   (read-abbrev-file)
-
+  (with-eval-after-load 'auth-source
+    (setq auth-sources '("~/.authinfo.gpg" "~/.netrc" "~/.authinfo")))
+  ;; Fix Spaceline symbols in emacsclient mode
   (spacemacs|do-after-display-system-init
     (spacemacs-modeline/init-spaceline))
 
