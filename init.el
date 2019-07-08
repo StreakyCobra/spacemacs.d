@@ -64,7 +64,8 @@ This function should only modify configuration layer settings."
      no-dots
      multiple-cursors
      org
-     python
+     (python :variables python-formatter 'black
+                        python-format-on-save t)
      ranger
      rebox
      restclient
@@ -467,7 +468,8 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  (spacemacs/load-spacemacs-env))
+  (spacemacs/load-spacemacs-env)
+  (add-to-list 'exec-path "/home/fabien/.conda/envs/fairtiq/bin/"))
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
@@ -529,6 +531,7 @@ before packages are loaded."
   (global-emojify-mode t)
   (spacemacs|do-after-display-system-init
    (mode-icons-mode))
+  (visual-line-mode)
 
   ;; ----------------------------------------------------------------------- ;;
   ;; Hooks                                                                   ;;
@@ -552,6 +555,14 @@ before packages are loaded."
   (read-abbrev-file)
   (with-eval-after-load 'auth-source
     (setq auth-sources '("~/.authinfo.gpg" "~/.netrc" "~/.authinfo")))
+
+  ;; Remap H and L
+  (with-eval-after-load 'evil-maps
+    (define-key evil-motion-state-map (kbd "H") 'evil-beginning-of-visual-line)
+    (define-key evil-motion-state-map (kbd "j") 'evil-next-visual-line)
+    (define-key evil-motion-state-map (kbd "k") 'evil-previous-visual-line)
+    (define-key evil-motion-state-map (kbd "L") 'evil-end-of-visual-line))
+
   ;; Fix Spaceline symbols in emacsclient mode
   (spacemacs|do-after-display-system-init
     (spacemacs-modeline/init-spaceline))
