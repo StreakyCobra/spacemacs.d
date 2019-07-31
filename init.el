@@ -469,6 +469,7 @@ default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
   (spacemacs/load-spacemacs-env)
+  (add-to-list 'exec-path "/home/fabien/.npm-packages/bin")
   (add-to-list 'exec-path "/home/fabien/.conda/envs/fairtiq/bin/"))
 
 (defun dotspacemacs/user-init ()
@@ -565,7 +566,8 @@ before packages are loaded."
 
   ;; Fix Spaceline symbols in emacsclient mode
   (spacemacs|do-after-display-system-init
-    (spacemacs-modeline/init-spaceline))
+    (spacemacs-modeline/init-spaceline)
+    (spacemacs/load-spacemacs-env))
 
   ;; Persistent undo
   (setq undo-tree-auto-save-history t
