@@ -53,6 +53,7 @@ This function should only modify configuration layer settings."
      ess
      git
      github
+     graphviz
      haskell
      helm
      html
