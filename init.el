@@ -202,8 +202,8 @@ It should only modify the values of Spacemacs settings."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 5)
-                                (projects . 7))
+   dotspacemacs-startup-lists '((agenda . 5)
+                                (todo . 7))
 
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
@@ -528,6 +528,8 @@ before packages are loaded."
    ;; org
    org-agenda-files '("~/documents/org/"
                       "~/documents/calendars")
+   org-columns-default-format "%40ITEM(Task) %TODO %3PRIORITY %TAGS %17Effort(Estimated Effort){:} %CLOCKSUM"
+   org-todo-keywords '((sequence "TODO" "IN PROGRESS" "|" "DONE"))
    ;; ranger
    ranger-cleanup-on-disable t
    ranger-dont-show-binary t
@@ -570,6 +572,30 @@ before packages are loaded."
   (read-abbrev-file)
   (with-eval-after-load 'auth-source
     (setq auth-sources '("~/.authinfo.gpg" "~/.netrc" "~/.authinfo")))
+
+
+  (with-eval-after-load 'org-faces
+    (set-face-attribute 'org-todo nil
+                        :box '(:line-width 2 
+                                           :color "grey75" 
+                                           :style released-button)
+                        :inverse-video t
+                        )
+    (set-face-attribute 'org-done nil
+                        :box '(:line-width 2 
+                                           :color "grey75" 
+                                           :style released-button)
+                        :inverse-video t
+                        )
+    (set-face-attribute 'org-priority nil
+                        :inherit font-lock-keyword-face 
+                        :inverse-video t 
+                        :box '(:line-width 2 
+                                           :color "grey75" 
+                                           :style released-button)
+                        )
+    )
+
 
   ;; Remap H and L
   (with-eval-after-load 'evil-maps
