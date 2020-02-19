@@ -45,6 +45,7 @@ This function should only modify configuration layer settings."
      better-defaults
      c-c++
      colors
+     deft
      docker
      emacs-lisp
      emoji
@@ -63,9 +64,11 @@ This function should only modify configuration layer settings."
      nginx
      no-dots
      multiple-cursors
-     org
-     (python :variables python-formatter 'black
-                        python-format-on-save t)
+     (org :variables
+          org-enable-org-journal-support t)
+     (python :variables
+             python-formatter 'black
+             python-format-on-save t)
      ranger
      rebox
      restclient
@@ -93,6 +96,7 @@ This function should only modify configuration layer settings."
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(mode-icons
+                                      (org-roam :location (recipe :fetcher github :repo "jethrokuan/org-roam"))
                                       pkgbuild-mode)
 
    ;; A list of packages that cannot be updated.
@@ -285,7 +289,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then the last auto saved layouts are resumed automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts t
+   dotspacemacs-auto-resume-layouts nil
 
    ;; If non-nil, auto-generate layout name when creating new layouts. Only has
    ;; effect when using the "jump to layout by number" commands. (default nil)
@@ -525,10 +529,24 @@ before packages are loaded."
    abbrev-file-name (concat user-home-directory ".abbrev_defs")
    ;; lockfiles
    create-lockfiles nil
+   ;; deft
+   deft-recursive t
+   deft-use-filter-string-for-filename t
+   deft-use-filename-as-title nil
+   deft-default-extension "org"
+   deft-directory "~/documents/org/"
    ;; org
    org-agenda-files '("~/documents/org/"
                       "~/documents/calendars")
    org-columns-default-format "%40ITEM(Task) %TODO %3PRIORITY %TAGS %17Effort(Estimated Effort){:} %CLOCKSUM"
+   org-download-screenshot-method "xclip -selection clipboard -t image/png -o > %s"
+   org-journal-dir "~/documents/org/journal/"
+   org-journal-file-format "%Y-%m-%d.org"
+   org-journal-date-prefix "#+TITLE: "
+   org-journal-date-format "%A, %B %d %Y"
+   org-journal-time-prefix "* "
+   org-journal-time-format ""
+   org-roam-directory "~/documents/org/roam/"
    org-todo-keywords '((sequence "TODO" "IN PROGRESS" "|" "DONE"))
    ;; ranger
    ranger-cleanup-on-disable t
@@ -538,6 +556,11 @@ before packages are loaded."
    ;; rebox
    rebox-min-fill-column 79
    rebox-style-loop '(11 13 15 17 21 23 25 27)
+   )
+
+  (setq-default
+   org-download-image-dir "./images"
+   org-download-heading-lvl nil
    )
 
   ;; ----------------------------------------------------------------------- ;;
@@ -596,6 +619,27 @@ before packages are loaded."
                         )
     )
 
+  (require 'org-roam)
+
+  (spacemacs/set-leader-keys
+    "orm" 'org-roam-mode
+    "orn" 'org-roam-new-file
+    "orf" 'org-roam-find-file
+    )
+
+  (spacemacs/set-leader-keys-for-minor-mode 'org-roam-mode
+    "rf" 'org-roam-find-file
+    "rg" 'org-roam-show-graph
+    "ri" 'org-roam-insert
+    "rl" 'org-roam
+    "rn" 'org-roam-new-file
+    "rt" 'org-roam-today
+    )
+
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-roam-mode)
+              (org-roam--build-cache-async)))
 
   ;; Remap H and L
   (with-eval-after-load 'evil-maps
