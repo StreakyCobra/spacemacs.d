@@ -1,5 +1,3 @@
-
-
 (defun insert-datetime-stamp ()
   "Insert string of the current datetime stamp."
   (interactive)
